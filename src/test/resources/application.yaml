@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+server:
+  servlet:
+    context-path: /order
+
+service-integration:
+  inventory-service-url: localhost:8080/inventory
+  order-service-url: localhost:8080/inventory
