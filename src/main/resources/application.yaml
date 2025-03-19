@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: ${DB_CONNECTION_STRING}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: ecomm
+
+server:
+  port: 8083
+  servlet:
+    context-path: /order
+
+service-integration:
+  inventory-service-url: localhost:8080/inventory
