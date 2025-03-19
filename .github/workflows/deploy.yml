@@ -41,10 +41,6 @@ jobs:
           if [ "$(sudo docker ps -aq -f name=orderservice)" ]; then
             sudo docker rm -f orderservice
           fi
-      - name: Run docker container
-        run: sudo docker run -d -p 8084:8084 --name orderservice \
-          -e DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
-          nitishsati8/order-service
 
       - name: Set environment variables
         run: |
