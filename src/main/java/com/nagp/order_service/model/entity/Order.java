@@ -30,7 +30,10 @@ public class Order {
     private Integer quantity;
     private String customerId;
     private Double totalPrice;
+    private String deliveryAddress;
+    private String deliveryInstructions;
 
+    private String paymentMethod;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItems> orderItems;
 

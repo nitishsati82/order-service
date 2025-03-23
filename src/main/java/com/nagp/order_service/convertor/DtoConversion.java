@@ -19,6 +19,7 @@ public class DtoConversion {
         order.setCustomerId(orderDto.getCustomerId());
         order.setTotalPrice(orderDto.getTotalPrice());
         order.setStatus(orderDto.getOrderStatus());
+        order.setPaymentMethod(orderDto.getPaymentMethod());
 
         List<OrderItems> orderItems = orderDto.getProducts().stream().map(productDto -> {
             OrderItems item = new OrderItems();

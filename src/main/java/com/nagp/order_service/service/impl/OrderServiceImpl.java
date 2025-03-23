@@ -29,13 +29,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllOrders(String sellerId) {
-        //List<Order> orderList = orderRepository.findAll();
-
-        List<Order> orders = new ArrayList<>();
-
-
-
-        return orders.stream().map(DtoConversion::convertToDto).toList();
+        List<Order> orderList = orderRepository.findAll();
+        return orderList.stream().map(DtoConversion::convertToDto).toList();
     }
 
     @Override
@@ -50,18 +45,24 @@ public class OrderServiceImpl implements OrderService {
     public String createOrder(OrderDto orderDto) {
         Order order = DtoConversion.convertToEntity(orderDto);
         order.setStatus("CREATED");
-        Order saved = orderRepository.save(order);
-        if(Objects.nonNull(saved)){
-            InventoryDto inventoryDto = new InventoryDto();
-            inventoryDto.setProductId(saved.getProductId());
-            inventoryDto.setStockCount(saved.getQuantity());
-            inventoryDto.setSellerId(saved.getSellerId());
-            InventoryDto updateInventory = inventoryClient.updateInventory(inventoryDto);
-            if(Objects.nonNull(updateInventory)){
-                return "SUCCESS";
+        orderRepository.save(order);
+        int saveCount = 0;
+        if(Objects.nonNull(orderDto) && !orderDto.getProducts().isEmpty()){
+            for(OrderDto.ProductDto productDto:orderDto.getProducts()){
+                InventoryDto inventoryDto = new InventoryDto();
+                inventoryDto.setProductId(productDto.getProductId());
+                inventoryDto.setStockCount(productDto.getQuantity());
+                inventoryDto.setSellerId(productDto.getSellerId());
+                InventoryDto updatedInventory = inventoryClient.updateInventory(inventoryDto);
+                if(Objects.nonNull(updatedInventory)){
+                    saveCount++;
+                }
             }
-
         }
+        if(saveCount>0){
+            return "SUCCESS";
+        }
+
         return null;
     }
 

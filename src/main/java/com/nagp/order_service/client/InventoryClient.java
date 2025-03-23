@@ -1,5 +1,6 @@
 package com.nagp.order_service.client;
 
+import com.nagp.order_service.config.ServiceUrlConfig;
 import com.nagp.order_service.model.dto.InventoryDto;
 import com.nagp.order_service.model.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,15 @@ public class InventoryClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("")
+    @Value("service-integration.inventory-service-url")
     String inventoryServiceUrl;
+
+    @Autowired
+    private ServiceUrlConfig serviceUrlConfig;
 
     public InventoryDto updateInventory(InventoryDto inventoryDto) {
         HttpEntity<InventoryDto> requestBody = new HttpEntity<>(inventoryDto, getHeaders());
-        return restTemplate.postForObject(inventoryServiceUrl + "/order-inventory-update", requestBody,
+        return restTemplate.postForObject(serviceUrlConfig.getInventoryServiceUrl() + "/order-inventory-update", requestBody,
                 InventoryDto.class);
     }
     private HttpHeaders getHeaders() {

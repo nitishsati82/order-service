@@ -20,7 +20,7 @@ public class OrderController {
     }
 
     @GetMapping("{orderId}")
-    ResponseEntity<OrderDto> getByOrderId(@RequestParam("orderId") Integer orderId,@RequestParam("sellerId") String sellerId){
+    ResponseEntity<OrderDto> getByOrderId(@RequestParam("orderId") Integer orderId,@RequestParam(value = "sellerId",required = false) String sellerId){
         return ResponseEntity.ok(orderService.getOrderById(orderId,sellerId));
     }
 

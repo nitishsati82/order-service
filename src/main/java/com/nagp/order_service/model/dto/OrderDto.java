@@ -15,9 +15,12 @@ import java.util.List;
 public class OrderDto {
     private Integer id;
     private Double totalPrice;
+    private String paymentMethod;
     private Integer totalQuantity;
     private String orderStatus;
     private String customerId;
+    private String deliveryAddress;
+    private String deliveryInstructions;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<ProductDto> products;
