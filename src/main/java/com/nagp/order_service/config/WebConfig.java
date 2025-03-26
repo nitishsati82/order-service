@@ -3,30 +3,24 @@ package com.nagp.order_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://13.235.208.227:80");
-        corsConfiguration.addAllowedOrigin("http://13.235.208.227");
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
-        corsConfiguration.addAllowedOrigin("http://localhost:3001");
-        corsConfiguration.addAllowedOrigin("http://localhost:8080");
-        corsConfiguration.addAllowedOrigin("http://13.200.154.116:8089");
-        corsConfiguration.addAllowedOrigin("http://13.235.208.227:8089");
-        corsConfiguration.addAllowedHeader("*"); // Allow all headers
-        corsConfiguration.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
-        corsConfiguration.setAllowCredentials(true); // Allow cookies if needed
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration); // Apply to all endpoints
-        return new CorsFilter(source);
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("https://13.235.208.227","http://localhost:3000","http://localhost:8080","https://13.235.208.227:8443","https://localhost:8443")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }
 
