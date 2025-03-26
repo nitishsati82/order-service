@@ -14,9 +14,8 @@ spring:
         default_schema: ecomm
 
 server:
-  port: 8083
   servlet:
     context-path: /order
 
 service-integration:
-  inventory-service-url: localhost:8080/inventory
+  inventory-service-url: https://13.235.208.227:8443/inventory
