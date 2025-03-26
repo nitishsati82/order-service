@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface OrderService {
     List<OrderDto> getAllOrders(String sellerId);
-    OrderDto getOrderById(Integer orderId,String sellerId);
+    List<OrderDto> getOrderById(Integer orderId,String sellerId);
+
+    OrderDto getOrderById(Integer orderId);
 
     String createOrder(OrderDto order);
 
-    OrderDto updateOrder(Integer orderId, OrderDto orderDetails);
+    OrderDto updateOrder(Integer orderId, String action);
 }

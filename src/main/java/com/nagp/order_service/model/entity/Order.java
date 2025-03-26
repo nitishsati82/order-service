@@ -24,6 +24,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String orderId;
     private String sellerId;
     private String productId;
     private String productName;

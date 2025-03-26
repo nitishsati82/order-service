@@ -10,13 +10,11 @@ import com.nagp.order_service.service.OrderService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service("order-service")
 public class OrderServiceImpl implements OrderService {
@@ -29,22 +27,32 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllOrders(String sellerId) {
-        List<Order> orderList = orderRepository.findAll();
+        List<Order> orderList = orderRepository.findBySellerId(sellerId);
         return orderList.stream().map(DtoConversion::convertToDto).toList();
     }
 
     @Override
-    public OrderDto getOrderById(Integer orderId, String sellerId) {
-        Optional<Order> order = orderRepository.findById(orderId);
-        return order.map(DtoConversion::convertToDto).orElse(null);
+    public  List<OrderDto> getOrderById(Integer orderId, String sellerId) {
+        List<Order> orderList = orderRepository.findByCustomerId(sellerId);
+        return orderList.stream().map(DtoConversion::convertToDto).toList();
 
     }
 
+    @Override
+    public  OrderDto getOrderById(Integer orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if(optionalOrder.isEmpty()){
+            return null;
+        }
+        return DtoConversion.convertToDto(optionalOrder.get());
+
+    }
     @Override
     @Transactional
     public String createOrder(OrderDto orderDto) {
         Order order = DtoConversion.convertToEntity(orderDto);
         order.setStatus("CREATED");
+        order.setOrderId(UUID.randomUUID().toString());
         orderRepository.save(order);
         int saveCount = 0;
         if(Objects.nonNull(orderDto) && !orderDto.getProducts().isEmpty()){
@@ -67,10 +75,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto updateOrder(Integer orderId, OrderDto orderDetails) {
+    public OrderDto updateOrder(Integer orderId, String action) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order != null) {
-            order.setStatus(orderDetails.getOrderStatus());
+            order.setStatus(action);
             orderRepository.save(order);
         }
 

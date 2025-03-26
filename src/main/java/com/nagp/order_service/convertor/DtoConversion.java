@@ -20,7 +20,7 @@ public class DtoConversion {
         order.setTotalPrice(orderDto.getTotalPrice());
         order.setStatus(orderDto.getOrderStatus());
         order.setPaymentMethod(orderDto.getPaymentMethod());
-
+        order.setSellerId(order.getSellerId());
         List<OrderItems> orderItems = orderDto.getProducts().stream().map(productDto -> {
             OrderItems item = new OrderItems();
             item.setProductId(productDto.getProductId());
@@ -29,6 +29,7 @@ public class DtoConversion {
             item.setPrice(productDto.getPrice());
             item.setProductName(productDto.getProductName());
             item.setOrder(order);
+            order.setSellerId(productDto.getSellerId());
             return item;
         }).collect(Collectors.toList());
 
@@ -48,6 +49,7 @@ public class DtoConversion {
         orderDto.setOrderStatus(order.getStatus());
         orderDto.setCreatedAt(order.getOrderDateTime());
         orderDto.setUpdatedAt(order.getModifiedAt());
+        orderDto.setOrderId(order.getOrderId());
 
         List<OrderDto.ProductDto> products = order.getOrderItems().stream().map(item -> {
             OrderDto.ProductDto productDto = new OrderDto.ProductDto();

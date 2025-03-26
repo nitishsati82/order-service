@@ -16,6 +16,8 @@ public class OrderDto {
     private Integer id;
     private Double totalPrice;
     private String paymentMethod;
+    private String orderId;
+    private String sellerId;
     private Integer totalQuantity;
     private String orderStatus;
     private String customerId;

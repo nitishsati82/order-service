@@ -19,9 +19,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrders(sellerId));
     }
 
-    @GetMapping("{orderId}")
-    ResponseEntity<OrderDto> getByOrderId(@RequestParam("orderId") Integer orderId,@RequestParam(value = "sellerId",required = false) String sellerId){
-        return ResponseEntity.ok(orderService.getOrderById(orderId,sellerId));
+    @GetMapping("/fetch")
+    ResponseEntity< List<OrderDto>> getByOrderId(@RequestParam(value = "orderId",required = false) Integer orderId,@RequestParam(value = "customerId",required = false) String customerId){
+        return ResponseEntity.ok(orderService.getOrderById(orderId,customerId));
+    }
+
+    @GetMapping("/{orderId}")
+    ResponseEntity< OrderDto> getByOrderId(@PathVariable(value = "orderId") Integer orderId){
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @PostMapping("/create")
@@ -30,7 +35,7 @@ public class OrderController {
     }
 
     @PostMapping("/update")
-    ResponseEntity<OrderDto> updateOrder(@RequestBody OrderDto orderDetails){
-        return ResponseEntity.ok(orderService.updateOrder(orderDetails.getId(),orderDetails));
+    ResponseEntity<OrderDto> updateOrder(@RequestParam("orderId") Integer orderId,@RequestParam(value = "action",required = false) String action){
+        return ResponseEntity.ok(orderService.updateOrder(orderId,action));
     }
 }
