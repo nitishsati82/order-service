@@ -18,4 +18,4 @@ server:
     context-path: /order
 
 service-integration:
-  inventory-service-url: https://13.235.208.227:8443/inventory
+  inventory-service-url: https://13.235.208.227:8081/inventory
